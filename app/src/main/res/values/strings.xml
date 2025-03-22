@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BookPlayer</string>
     <string name="notification_channel_name">Media</string>
+    <string name="key_point_sub_title">KEY POINT %d OF %d</string>
 </resources>
