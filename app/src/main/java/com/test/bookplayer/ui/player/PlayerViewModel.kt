@@ -126,6 +126,7 @@ class PlayerViewModel : BaseViewModel<MediaScreenState>(
                     keyPointsTotal = audioBook.summary.size,
                     keyPoint = 1,
                     keyPointSubTitle = keyPoint.description,
+                    keyPointText = keyPoint.textContent.description
                 )
             )
         }

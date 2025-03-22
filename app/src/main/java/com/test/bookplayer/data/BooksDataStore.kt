@@ -16,7 +16,9 @@ object BooksDataStore {
                         mediaMetadata = "3:00",
                     ),
                     textContent = TextContent(
-                        description = "The Law of Attraction is the most powerful law in the universe."
+                        description = """The Law of Attraction is the most powerful law in the universe.
+                        It is the Law of Attraction which uses the power of the mind to translate whatever is in our thoughts and materialize them into reality.
+                        In basic terms, all thoughts turn into things eventually. If you focus on negative doom and gloom you will remain under that cloud."""
                     )
                 ),
                 SummaryKeyPoint(
@@ -27,7 +29,11 @@ object BooksDataStore {
                         mediaMetadata = "3:00",
                     ),
                     textContent = TextContent(
-                        description = "You are a vibrational being."
+                        description = """The Law of Attraction is the most powerful law in the universe.
+                                It is the Law of Attraction which uses the power of the mind to translate whatever is in our thoughts and materialize them into reality.
+                                In basic terms, all thoughts turn into things eventually.
+                                If you focus on negative doom and gloom you will remain under that cloud.
+                                """
                     )
                 ),
                 SummaryKeyPoint(
@@ -38,7 +44,11 @@ object BooksDataStore {
                         mediaMetadata = "3:00",
                     ),
                     textContent = TextContent(
-                        description = "You are the creator of your own reality."
+                        description = """The Law of Attraction is the most powerful law in the universe.
+                                It is the Law of Attraction which uses the power of the mind to translate whatever is in our thoughts and materialize them into reality.
+                                In basic terms, all thoughts turn into things eventually.
+                                If you focus on negative doom and gloom you will remain under that cloud.
+                                """
                     )
                 ),
                 SummaryKeyPoint(
@@ -49,7 +59,11 @@ object BooksDataStore {
                         mediaMetadata = "3:00",
                     ),
                     textContent = TextContent(
-                        description = "You are a creator; you create with your every thought."
+                        description = """The Law of Attraction is the most powerful law in the universe.
+                                It is the Law of Attraction which uses the power of the mind to translate whatever is in our thoughts and materialize them into reality.
+                                In basic terms, all thoughts turn into things eventually.
+                                If you focus on negative doom and gloom you will remain under that cloud.
+                                """
                     )
                 ),
                 SummaryKeyPoint(
@@ -60,7 +74,11 @@ object BooksDataStore {
                         mediaMetadata = "3:00",
                     ),
                     textContent = TextContent(
-                        description = "Anything that you can imagine is yours to be or do or have."
+                        description = """The Law of Attraction is the most powerful law in the universe.
+                                It is the Law of Attraction which uses the power of the mind to translate whatever is in our thoughts and materialize them into reality.
+                                In basic terms, all thoughts turn into things eventually.
+                                If you focus on negative doom and gloom you will remain under that cloud.
+                                """
                     )
                 ),
             )

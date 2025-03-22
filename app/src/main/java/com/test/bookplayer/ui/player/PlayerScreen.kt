@@ -101,10 +101,17 @@ private fun TextContent(
     state: State<MediaScreenState>,
     modifier: Modifier = Modifier,
 ) {
+    val description by remember { derivedStateOf { state.value.summary.keyPointText } }
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier,
+        modifier = modifier.padding(16.dp),
     ) {
+        Text(
+            text = description,
+            modifier = Modifier.fillMaxSize(),
+            textAlign = TextAlign.Center,
+            fontSize = 16.sp,
+        )
     }
 }
 
@@ -216,6 +223,7 @@ private fun AudioProgressBar(
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
+        Spacer(modifier = Modifier.size(8.dp))
         Material2StyledSlider(
             sliderPosition = mediaStatus.progress,
             colors = SliderDefaults.colors(
@@ -227,6 +235,7 @@ private fun AudioProgressBar(
             ),
             modifier = Modifier.weight(1f),
         )
+        Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = mediaStatus.durationFormatted,
             fontSize = 14.sp,
