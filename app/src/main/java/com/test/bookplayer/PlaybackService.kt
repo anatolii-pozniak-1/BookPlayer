@@ -2,6 +2,8 @@ package com.test.bookplayer
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
@@ -30,8 +32,18 @@ class PlaybackService : MediaSessionService() {
 
     private fun initializeSessionAndPlayer() {
         val player = ExoPlayer.Builder(this).build()
-        mediaSession = MediaSession.Builder(this, player).build()
+        mediaSession = MediaSession.Builder(this, player)
+            .setSessionActivity(sessionActivity)
+            .build()
     }
+
+    private val sessionActivity: PendingIntent
+        get() = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
     override fun onGetSession(
         controllerInfo: MediaSession.ControllerInfo
@@ -46,9 +58,7 @@ class PlaybackService : MediaSessionService() {
         super.onDestroy()
     }
 
-
     companion object {
         private const val CHANNEL_ID = "media_session_notification_channel_id"
-
     }
 }

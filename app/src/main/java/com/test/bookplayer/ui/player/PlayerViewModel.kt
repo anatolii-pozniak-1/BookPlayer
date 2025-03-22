@@ -1,6 +1,7 @@
 package com.test.bookplayer.ui.player
 
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import com.test.bookplayer.base.BaseViewModel
@@ -10,6 +11,7 @@ import com.test.bookplayer.data.BooksDataStore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.math.max
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -26,7 +28,6 @@ class PlayerViewModel : BaseViewModel<MediaScreenState>(
         initState(audioBook = audioBook)
         setupMediaSyncTimer()
         setupMediaContent(audioBook)
-
     }
 
     fun handleEvent(event: PlayerScreenEvent) {
@@ -53,12 +54,16 @@ class PlayerViewModel : BaseViewModel<MediaScreenState>(
     }
 
     private val MediaController.mediaStatus: MediaStatus
-        get() = MediaStatus(
-            progressFormatted = currentPosition.formatToMMSS(),
-            durationFormatted = duration.formatToMMSS(),
-            progress = currentPosition.toFloat() / duration.toFloat(),
-            isPlaying = isPlaying
-        )
+        get() {
+            val total = max(duration, 0L)
+            val progress = if (total == 0L) 0f else currentPosition.toFloat() / total
+            return MediaStatus(
+                progressFormatted = currentPosition.formatToMMSS(),
+                durationFormatted = total.formatToMMSS(),
+                progress = progress,
+                isPlaying = isPlaying
+            )
+        }
 
     private fun doOnPlayPauseClicked() {
         setState {
@@ -85,26 +90,21 @@ class PlayerViewModel : BaseViewModel<MediaScreenState>(
     private fun changePage(index: Int) = setState { copy(contentIndex = index) }
 
     private fun nextMedia() {
-        if (uiState.value.summary.hasNext.not()) return
+        val summary = uiState.value.summary
+        if (summary.hasNext.not()) return
         mediaController?.seekToNextMediaItem()
-        setState {
-            val index = summary.keyPoint
-            copy(
-                summary = summary.run {
-                    copy(
-                        keyPoint = index + 1,
-                        keyPointSubTitle = _audioBook?.summary?.getOrNull(index)?.description.orEmpty(),
-                    )
-                }
-            )
-        }
+        changeMediaItem(index = summary.keyPoint)
     }
 
     private fun prevMedia() {
-        if (uiState.value.summary.hasPrev.not()) return
+        val summary = uiState.value.summary
+        if (summary.hasPrev.not()) return
         mediaController?.seekToPreviousMediaItem()
+        changeMediaItem(index = summary.keyPoint - 2)
+    }
+
+    private fun changeMediaItem(index: Int) {
         setState {
-            val index = summary.keyPoint - 2
             copy(
                 summary = summary.run {
                     copy(
@@ -135,8 +135,19 @@ class PlayerViewModel : BaseViewModel<MediaScreenState>(
         this.mediaController = mediaController
         _audioBook?.let { audioBook ->
             setupMediaContent(audioBook)
-            mediaController.addListener(object : Player.Listener {
-            })
+            mediaController.addListener(
+                object : Player.Listener {
+                    override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                        changeMediaItem(mediaController.currentMediaItemIndex)
+                    }
+
+                    override fun onIsPlayingChanged(isPlaying: Boolean) {
+                        setState {
+                            copy(mediaStatus = mediaStatus.copy(isPlaying = isPlaying))
+                        }
+                    }
+                },
+            )
         }
     }
 
@@ -144,13 +155,12 @@ class PlayerViewModel : BaseViewModel<MediaScreenState>(
 
     private fun setupMediaContent(audioBook: AudioBook) {
         mediaController?.run {
-            setMediaItems(audioBook.mediaItems)
-            prepare()
+            if (mediaItemCount == 0) {
+                setMediaItems(audioBook.mediaItems)
+                prepare()
+            } else {
+                changeMediaItem(index = currentMediaItemIndex)
+            }
         }
-    }
-
-    companion object {
-        private const val VIDEO_URI =
-            "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     }
 }
