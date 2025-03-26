@@ -27,6 +27,7 @@ data class MediaStatus(
     val progressFormatted: String,
     val progress: Float,
     val isPlaying: Boolean = false,
+    val mediaIndex: Int = 0
 ) {
     companion object {
         val initialState = MediaStatus(
@@ -34,6 +35,7 @@ data class MediaStatus(
             progressFormatted = "00:00",
             progress = 0f,
             isPlaying = false,
+            mediaIndex = 0,
         )
     }
 }
