@@ -58,7 +58,7 @@ class PlayerViewModel : ViewModel() {
             summary = Summary(
                 keyPointsTotal = book.summary.size,
                 keyPoint = mediaStatus.mediaIndex + 1,
-                keyPointSubTitle = keyPoint.description,
+                keyPointSubTitle = keyPoint.title,
                 keyPointText = keyPoint.textContent.description
             )
         )

@@ -14,7 +14,7 @@ fun SummaryKeyPoint.toMediaItem(author: String): MediaItem {
         .setMediaMetadata(
             MediaMetadata.Builder()
                 .setArtist(author)
-                .setTitle(description)
+                .setTitle(title)
                 .build()
         )
         .build()
